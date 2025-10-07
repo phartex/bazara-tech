@@ -1,62 +1,76 @@
-"use client";
-import { create } from "zustand";
-import Cookies from "js-cookie";
+import { create } from 'zustand'
+import Cookies from 'js-cookie'
 
-interface AuthUser {
-  id: string;
-  email: string;
-  accessToken: string;
-  firstName: string;
-  lastName: string;
-  phoneNumber: string;
-  userType: string;
-  role: string;
-  refreshToken: string;
-  expires: string;
+interface User {
+  firstName: string
+  lastName: string
+  email: string
+  dateCreated: string
 }
 
 interface AuthState {
-  authenticatedUser: AuthUser | null;
-  setAuthUser: (authData: AuthUser) => void;
-  clearAuthUser: () => void;
+  user: User | null
+  accessToken: string | null
+  isAuthenticated: boolean
+
+  // Actions
+  setAuthUser: (user: User, token: string) => void
+  clearAuthUser: () => void
+  getAuthFromCookies: () => void
+  setAuthToCookies: (user: User, token: string) => void
 }
 
-const isClient = typeof window !== "undefined";
-
-const getAuthFromCookies = (): AuthUser | null => {
-  if (isClient) {
-    const authUser = Cookies.get("authUser");
-    return authUser ? JSON.parse(authUser) : null;
-  }
-  return null;
-};
-
-const setAuthToCookies = (authData: AuthUser | null) => {
-  if (isClient) {
-    if (authData) {
-      Cookies.set("authUser", JSON.stringify(authData), {
-        expires: 1,
-        path: "/",
-        secure: process.env.NODE_ENV === "production",
-        sameSite: "Strict",
-      });
-    } else {
-      Cookies.remove("authUser");
-    }
-  }
-};
-
 export const useAuthStore = create<AuthState>((set) => ({
-  authenticatedUser: getAuthFromCookies(),
-  
-  setAuthUser: (authData: AuthUser) => {
-    console.log("Setting auth user:", authData); // Debug log
-    setAuthToCookies(authData);
-    set({ authenticatedUser: authData });
+  user: null,
+  accessToken: null,
+  isAuthenticated: false,
+
+  // ✅ set user + token in Zustand
+  setAuthUser: (user, token) => {
+    set({
+      user,
+      accessToken: token,
+      isAuthenticated: true,
+    })
+
+    // also set to cookies
+    Cookies.set('user', JSON.stringify(user))
+    Cookies.set('accessToken', token)
   },
-  
+
+  // ✅ clear everything
   clearAuthUser: () => {
-    setAuthToCookies(null);
-    set({ authenticatedUser: null });
+    Cookies.remove('user')
+    Cookies.remove('accessToken')
+    set({
+      user: null,
+      accessToken: null,
+      isAuthenticated: false,
+    })
   },
-}));
+
+  // ✅ restore from cookies (on page refresh)
+  getAuthFromCookies: () => {
+    const userCookie = Cookies.get('user')
+    const tokenCookie = Cookies.get('accessToken')
+
+    if (userCookie && tokenCookie) {
+      try {
+        const parsedUser = JSON.parse(userCookie)
+        set({
+          user: parsedUser,
+          accessToken: tokenCookie,
+          isAuthenticated: true,
+        })
+      } catch (error) {
+        console.error('Failed to parse user cookie:', error)
+      }
+    }
+  },
+
+  // ✅ manually set cookies (if token/user fetched externally)
+  setAuthToCookies: (user, token) => {
+    Cookies.set('user', JSON.stringify(user))
+    Cookies.set('accessToken', token)
+  },
+}))

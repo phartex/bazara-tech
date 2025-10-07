@@ -2,78 +2,76 @@
 import { useState } from "react";
 import { Eye, EyeOff } from "lucide-react";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
-import { Checkbox } from "@/components/ui/checkbox";
 import { Input } from "@/components/ui/input";
-import { Button } from "@/components/ui/button";
+import { Button, ButtonLoading } from "@/components/ui/button";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { useAuthStore } from "@/store/auth";
 import { toast } from "react-toastify";
 import { useMutation } from "@tanstack/react-query";
-import apiClient from "@/lib/apiClient";
 import { useRouter } from "next/navigation";
 
 const formSchema = z.object({
-  email: z.string().email({ message: "Email must be valid" }),
+  username: z.string().email({ message: "Email must be valid" }),
   password: z.string().min(2, { message: "Password must be at least 2 characters." }),
 });
 
 export default function LoginForm() {
-  const [checked, setChecked] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
   const form = useForm({
     resolver: zodResolver(formSchema),
-    defaultValues: { email: "", password: "" },
+    defaultValues: { username: "", password: "" },
   });
   const { setAuthUser } = useAuthStore();
   const router = useRouter();
 
   const authenticateUser = useMutation({
-    mutationFn: async (data: { email: string; password: string }) => {
-      const res = await apiClient.post("/api/v1/platform-admin/auth/login", data);
-      return res.data;
+    mutationFn: async (data: { username: string; password: string }) => {
+      const res = await fetch("/api/auth/login", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(data),
+      });
+
+      if (!res.ok) {
+        const errorData = await res.json().catch(() => ({}));
+        throw new Error(errorData.message || "Login failed");
+      }
+
+      const json = await res.json();
+      return json;
     },
+
     onSuccess: (response) => {
       console.log("Full login response:", response);
-      
-      // Extract data from your API response structure
-      const { data } = response;
-      const authData = {
-        id: data.user.email,
-        email: data.user.email,
-        accessToken: data.accessToken,
-        firstName: data.user.firstName,
-        lastName: data.user.lastName,
-        phoneNumber: data.user.phoneNumber,
-        userType: data.user.userType,
-        role: data.user.role,
-        refreshToken: data.refreshToken,
-        expires: data.expires
-      };
-      
-      console.log("Processed auth data:", authData);
-      
-      // Store the processed authData, not the raw response.data
-      setAuthUser(authData);
+
+      const userData = response.data?.user;
+      const accessToken = response.data?.accessToken;
+
+      if (userData && accessToken) {
+  setAuthUser(userData, accessToken)
+      }
+
       toast.success("Login Successful");
       router.push("/dashboard");
     },
+
     onError: (error: any) => {
-      const errorMessage = error.response?.data?.message || "Login failed";
-      toast.error(errorMessage);
+      console.error("Login error:", error);
+      toast.error("Unable to login. Please check your credentials and try again.");
     },
   });
 
   const togglePasswordVisibility = () => setShowPassword(!showPassword);
-  const onSubmit = (data: { email: string; password: string }) => authenticateUser.mutate(data);
+  const onSubmit = (data: { username: string; password: string }) => authenticateUser.mutate(data);
 
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="text-[#353F50] w-full">
         <FormField
           control={form.control}
-          name="email"
+          name="username"
           render={({ field }) => (
             <FormItem className="mb-6">
               <FormLabel>Email Address/Username</FormLabel>
@@ -84,6 +82,7 @@ export default function LoginForm() {
             </FormItem>
           )}
         />
+
         <FormField
           control={form.control}
           name="password"
@@ -102,13 +101,17 @@ export default function LoginForm() {
             </FormItem>
           )}
         />
+
         <div className="flex justify-between items-center my-4">
-          <div className="flex items-center">
-            
-          </div>
           <Button variant="link" type="button" className="text-[#103FA3]">Forgot Password?</Button>
         </div>
-        <Button type="submit"  className="w-full bg-[#1659E6] py-6 text-xl" disabled={authenticateUser.isPending}>
+
+        <Button
+          type="submit"
+          className="w-full bg-[#1659E6] py-6 text-xl hover:bg-[#1659E6] hover:text-white"
+          disabled={authenticateUser.isPending}
+        >
+          {authenticateUser.isPending && <ButtonLoading className="h-4 w-4 animate-spin mr-2" />}
           {authenticateUser.isPending ? "Logging in..." : "Log In"}
         </Button>
       </form>
