@@ -76,9 +76,9 @@ export default function LoginForm() {
           name="email"
           render={({ field }) => (
             <FormItem className="mb-6">
-              <FormLabel>Email Address</FormLabel>
+              <FormLabel>Email Address/Username</FormLabel>
               <FormControl>
-                <Input placeholder="Enter email address" {...field} />
+                <Input placeholder="Email Address/Username" {...field} />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -106,9 +106,9 @@ export default function LoginForm() {
           <div className="flex items-center">
             
           </div>
-          <Button variant="link" type="button">Forgot Password?</Button>
+          <Button variant="link" type="button" className="text-[#103FA3]">Forgot Password?</Button>
         </div>
-        <Button type="submit" className="w-full" disabled={authenticateUser.isPending}>
+        <Button type="submit"  className="w-full bg-[#1659E6] py-6 text-xl" disabled={authenticateUser.isPending}>
           {authenticateUser.isPending ? "Logging in..." : "Log In"}
         </Button>
       </form>
