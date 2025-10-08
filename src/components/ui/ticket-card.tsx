@@ -9,7 +9,7 @@ interface TicketCardProps extends CardWrapperProps, Statistics{
 function TicketCard(props: TicketCardProps) {
   const {percentage_change,value}=props
   return (
-    <div className="">
+    <div className="w-[400px]">
       <CardWrapper {...props}
       isTitleLight
       >
