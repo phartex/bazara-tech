@@ -1,6 +1,6 @@
 # Bazara – Analytics Dashboard
 
-Bazara is a **Next.js + TypeScript** analytics dashboard application that includes authentication, protected routes, responsive UI components, and interactive charts.  
+Bazara Tech is a **Next.js + TypeScript** analytics dashboard application that includes authentication, protected routes, responsive UI components, and interactive charts.  
 It follows modern frontend development best practices with emphasis on **type safety**, **reusable components**, **performance**, and **accessibility**.
 
 ---
@@ -40,7 +40,7 @@ It follows modern frontend development best practices with emphasis on **type sa
 ---
 
 
-## 🚀 Live Link: [https://bazara-lyart.vercel.app/login](https://bazara-lyart.vercel.app/login)
+## 🚀 Live Link: [https://bazara-tech.netlify.app/]
 
 ---
 
@@ -101,15 +101,6 @@ It follows modern frontend development best practices with emphasis on **type sa
 - **Unit Tests**: Forms, cards, and key components.
 - **Tools**: Jest + React Testing Library.
 - **Coverage**: ≥ 80% for lines and functions.
-
----
-
-## 📌 Recommendations & Technical Debt
-
-1. Replace all **`index`** used as keys in `.map()` with **`uuid-v4`**.
-2. Replace **hardcoded colors** with Tailwind theme configuration for easier theming.
-3. Update and expand **test cases** to cover new features and edge cases.
-4. Implement **full mobile and tablet responsiveness**.
 
 ---
 
