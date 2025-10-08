@@ -1,27 +1,31 @@
-import { SignJWT, jwtVerify } from 'jose'
+import { SignJWT, jwtVerify } from 'jose';
 
-const JWT_SECRET = process.env.JWT_SECRET || 'your-secret-key'
-const secret = new TextEncoder().encode(JWT_SECRET)
-
-// Sign a token
-export async function signToken(
-  payload: { username: string },
-  expiresIn: number,
-): Promise<string> {
-  return await new SignJWT(payload)
-    .setProtectedHeader({ alg: 'HS256' })
-    .setIssuedAt()
-    .setExpirationTime('1 day') // 1 day
-    .sign(secret)
+// define payload structure
+export interface JwtPayload {
+  username: string;
+  [key: string]: string | number | boolean | null | undefined;
 }
 
-// Verify a token
-export async function verifyToken<T = any>(token: string): Promise<T | null> {
+const SECRET_KEY = new TextEncoder().encode(
+  process.env.JWT_SECRET || 'your-secret-key'
+);
+
+// function to sign JWT
+export async function signToken(payload: JwtPayload, expiresInSeconds?: number): Promise<string> {
+  const token = await new SignJWT(payload)
+    .setProtectedHeader({ alg: 'HS256' })
+    .setExpirationTime(expiresInSeconds ? `${expiresInSeconds}s` : '1h')
+    .sign(SECRET_KEY);
+
+  return token;
+}
+
+// function to verify JWT
+export async function verifyToken(token: string): Promise<JwtPayload> {
   try {
-    const { payload } = await jwtVerify(token, secret)
-    return payload as T
-  } catch (err) {
-    console.error('JWT verification failed:', err)
-    return null
+    const { payload } = await jwtVerify(token, SECRET_KEY);
+    return payload as JwtPayload;
+  } catch {
+    throw new Error('Invalid or expired token');
   }
 }

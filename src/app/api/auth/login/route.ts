@@ -21,7 +21,7 @@ export async function POST(request: Request) {
   }
 
   // Valid credentials
-  const token = await signToken({ username }, COOKIE_MAX_AGE)
+  const token = await signToken({ username })
 
   const serialized = serialize('token', token, {
     httpOnly: true,

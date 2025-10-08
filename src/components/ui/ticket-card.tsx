@@ -7,7 +7,7 @@ interface TicketCardProps extends CardWrapperProps, Statistics{
 }
 
 function TicketCard(props: TicketCardProps) {
-  const {percentage_change,title,value, icon, showTitleLine}=props
+  const {percentage_change,value}=props
   return (
     <div className="">
       <CardWrapper {...props}

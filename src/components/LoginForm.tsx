@@ -57,7 +57,7 @@ export default function LoginForm() {
       router.push("/dashboard");
     },
 
-    onError: (error: any) => {
+    onError: (error) => {
       console.error("Login error:", error);
       toast.error("Unable to login. Please check your credentials and try again.");
     },
@@ -104,7 +104,7 @@ export default function LoginForm() {
 
         <div className="flex justify-between items-center my-4">
           <div>
-            
+
           </div>
           <Button variant="link" type="button" className="text-[#103FA3]">Forgot Password?</Button>
         </div>

@@ -17,29 +17,6 @@ import {
 
 
 
-const data = [
-  { month: "Jan", "Open Tickets": 120, "Closed Tickets": 100 },
-  { month: "Feb", "Open Tickets": 150, "Closed Tickets": 130 },
-  { month: "Mar", "Open Tickets": 140, "Closed Tickets": 160 },
-  { month: "Apr", "Open Tickets": 110, "Closed Tickets": 140 },
-  { month: "May", "Open Tickets": 180, "Closed Tickets": 120 },
-  { month: "Jun", "Open Tickets": 160, "Closed Tickets": 180 },
-  { month: "Jul", "Open Tickets": 130, "Closed Tickets": 200 },
-  { month: "Aug", "Open Tickets": 170, "Closed Tickets": 150 },
-  { month: "Sep", "Open Tickets": 200, "Closed Tickets": 170 },
-  { month: "Oct", "Open Tickets": 180, "Closed Tickets": 190 },
-  { month: "Nov", "Open Tickets": 160, "Closed Tickets": 180 },
-  { month: "Dec", "Open Tickets": 140, "Closed Tickets": 200 },
-];
-
-
-
-const dataDonut = [
-  { name: "Success", value: 400 },
-  { name: "Failure", value: 300 },
-  { name: "Pending", value: 300 },
-];
-
 const COLORS = ["#3498db", "#2ecc71", "#f39c12"];
 
 
@@ -52,7 +29,7 @@ const dataChangeRequest = [
 
 
 function HorizontalChart(props:{ticketData:TicketData[]}){
-  const colors=[""]
+
   return     <div className="space-y-8">
         {props.ticketData.map((item, index) => (
           <div key={index} className="flex items-center justify-between">
