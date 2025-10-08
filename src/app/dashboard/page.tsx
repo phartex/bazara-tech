@@ -13,7 +13,7 @@ export default function Dashboard() {
   return (
     <div className="">
       <Header />
-      <h1 className="text-2xl font-bold mb-6">Dashboard</h1>
+      <h1 className="text-2xl font-bold mb-6 p-4">Home</h1>
 
 
       <div className="overflow-x-auto rounded-lg border border-gray-200 p-4 m-4">
