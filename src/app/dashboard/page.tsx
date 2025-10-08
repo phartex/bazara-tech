@@ -1,25 +1,28 @@
 "use client";
+import Header from "@/components/Header/Header";
 import { useEffect, useState } from "react";
 
 export default function Dashboard() {
-  const [devices, setDevices] = useState<any[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
+
 
 
 
   return (
-    <div className="container mx-auto py-10">
+    <div className="">
+      <Header />
       <h1 className="text-2xl font-bold mb-6">Dashboard</h1>
 
-      {loading && <p>Loading devices...</p>}
-      {error && <p className="text-red-500">Error: {error}</p>}
 
-      {!loading && !error && (
-        <div className="overflow-x-auto rounded-lg">
-    <p>Dashboard content</p>
-        </div>
-      )}
+      <div className="overflow-x-auto rounded-lg border border-gray-200 shadow-md p-4 m-4">
+        {/* <Statistics />
+        <TicketManagent />
+        <ChangeRequest />
+        <AwaitingApproval />
+        <IncidentTicket />
+        <TicketResolution />
+        <TicketRequest /> */}
+      </div>
+
     </div>
   );
 }

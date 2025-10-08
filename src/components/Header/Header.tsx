@@ -1,6 +1,8 @@
 import React from 'react';
-import NavLink from './component/navlink'
-import SearchInput from '@/components/ui/search-input'
+import SearchInput from '../ui/search-input';
+import Image from 'next/image'
+import NavLink from '../navlink';
+import ProfileHeader from '../ProfileHeader/ProfileHeader';
 
 const Header = () => {
 
@@ -36,22 +38,20 @@ const Header = () => {
         <div className="flex items-center w-full px-4 py-4">
           {/* Logo */}
           <div className="flex flex-1/3  flex-col lg:flex-row items-center gap-2 w-full ">
-          <div className="flex items-center gap-1">
+          <div className="flex items-center gap-1 px-8">
 
             <Image
               src="/images/logo.svg"
               alt="Company Logo"
-              width={22}
-              height={22}
+              width={150}
+              height={150}
               priority
               />
-            <p className="text-primary text-[#1659E6] text-lg font-semibold ">
-              Bazara
-            </p>
+           
               </div>
-              <div className="ml-2">
+              <div className="ml-2 w-full">
 
-            <SearchInput placeholder='Search for anything' />
+            <SearchInput placeholder='Search for anything'/>
               </div>
 
           </div>
@@ -64,20 +64,20 @@ const Header = () => {
           </div>
 
           {/* Avatar */}
-          <div className="flex   gap-4 ">
+          <div className="flex   gap-4 px-9">
             <Image
               src={`/images/icons/notification.svg`}
-              height={32}
-              width={32}
+              height={40}
+              width={40}
               alt="notification"
             />
             <Image
               src={`/images/icons/more.svg`}
-              height={32}
-              width={32}
+              height={40}
+              width={40}
               alt="notification"
             />
-            <Profile />
+            <ProfileHeader />
           </div>
         </div>
 
