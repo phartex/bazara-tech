@@ -103,6 +103,9 @@ export default function LoginForm() {
         />
 
         <div className="flex justify-between items-center my-4">
+          <div>
+            
+          </div>
           <Button variant="link" type="button" className="text-[#103FA3]">Forgot Password?</Button>
         </div>
 
