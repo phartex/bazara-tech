@@ -35,8 +35,8 @@ It follows modern frontend development best practices with emphasis on **type sa
 ## 🚀 Branches
 
 - **Main:** Default branch
-- **login:** 
 - **dashboard:** 
+- **login-authentocation:** 
 ---
 
 
