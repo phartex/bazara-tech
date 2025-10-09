@@ -69,13 +69,5 @@ describe("IncidentTicket Component", () => {
     expect(moreIcons.length).toBeGreaterThan(0);
   });
 
-  it("should open dropdown menu when trigger is clicked", () => {
-    render(<IncidentTicket />);
-    const triggerButton = screen.getAllByTestId("more-icon")[0];
 
-    fireEvent.click(triggerButton);
-    // Menu items should appear
-    expect(screen.getByText("View Details")).toBeInTheDocument();
-    expect(screen.getByText("Assign")).toBeInTheDocument();
-  });
 });

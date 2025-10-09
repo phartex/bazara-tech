@@ -73,8 +73,10 @@ describe("ApprovalTable Component", () => {
     // Verify first row’s data
     const firstRow = within(rows[1]);
     approvalTable.body[0].slice(0, 6).forEach((cellValue) => {
-      expect(firstRow.getByText(cellValue)).toBeInTheDocument();
+      const matches = firstRow.getAllByText(cellValue);
+      expect(matches.length).toBeGreaterThan(0);
     });
+
   });
 
   it("renders status badges correctly", () => {

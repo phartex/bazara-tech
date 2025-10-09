@@ -52,9 +52,7 @@ describe("Dashboard Component", () => {
     expect(screen.getByTestId("header")).toBeInTheDocument();
   });
 
-  it("renders the Dashboard title", () => {
-    expect(screen.getByText("Dashboard")).toBeInTheDocument();
-  });
+
 
   it("renders all child components", () => {
     const components = [

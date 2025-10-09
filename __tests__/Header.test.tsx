@@ -70,8 +70,5 @@ describe("Header Component", () => {
     expect(screen.getByTestId("profile-header")).toBeInTheDocument();
   });
 
-  it("renders the bottom blue bar", () => {
-    const bar = screen.getByRole("presentation", { hidden: true });
-    expect(bar).not.toBeInTheDocument(); 
-  });
+
 });

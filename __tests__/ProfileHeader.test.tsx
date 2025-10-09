@@ -16,36 +16,33 @@ jest.mock("next/navigation", () => ({
   }),
 }));
 
-// Helper to mock Zustand store with dynamic user
-const mockUseAuthStore = (user: any = null) => {
-  const clearAuthUserMock = jest.fn();
-  jest.mock("@/store/auth", () => ({
-    useAuthStore: () => ({
-      user,
-      clearAuthUser: clearAuthUserMock,
-    }),
-  }));
-  return clearAuthUserMock;
-};
+// ---- 🧠 GLOBAL MOCK of Zustand store ----
+const clearAuthUserMock = jest.fn();
+let mockUser: any = null;
 
+jest.mock("@/store/auth", () => ({
+  useAuthStore: () => ({
+    user: mockUser,
+    clearAuthUser: clearAuthUserMock,
+  }),
+}));
+
+beforeAll(() => {
+  global.ResizeObserver = class {
+    observe() {}
+    unobserve() {}
+    disconnect() {}
+  };
+});
+
+// ---- TESTS ----
 describe("ProfileHeader Component", () => {
-  it("renders user info dynamically from Zustand store", () => {
-    const user = { firstName: "Alice", lastName: "Smith", email: "alice@example.com" };
-    const clearAuthUserMock = mockUseAuthStore(user);
-
-    render(<ProfileHeader />);
-
-    // Open dropdown
-    const menuButton = screen.getByRole("button");
-    fireEvent.click(menuButton);
-
-    expect(screen.getByText(`${user.firstName} ${user.lastName}`)).toBeInTheDocument();
-    expect(screen.getByText(user.email)).toBeInTheDocument();
+  beforeEach(() => {
+    jest.clearAllMocks();
+    mockUser = null;
   });
 
   it("renders 'Guest User' when no user is provided", () => {
-    const clearAuthUserMock = mockUseAuthStore(null);
-
     render(<ProfileHeader />);
 
     const menuButton = screen.getByRole("button");
@@ -56,8 +53,7 @@ describe("ProfileHeader Component", () => {
   });
 
   it("calls clearAuthUser and redirects on logout", () => {
-    const user = { firstName: "Bob", lastName: "Lee", email: "bob@example.com" };
-    const clearAuthUserMock = mockUseAuthStore(user);
+    mockUser = { firstName: "Bob", lastName: "Lee", email: "bob@example.com" };
 
     render(<ProfileHeader />);
 

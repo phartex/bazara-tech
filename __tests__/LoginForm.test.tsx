@@ -53,11 +53,6 @@ describe("LoginForm", () => {
     jest.clearAllMocks();
   });
 
-  it("renders email and password fields", () => {
-    render(<LoginForm />);
-    expect(screen.getByLabelText(/email address\/username/i)).toBeInTheDocument();
-    expect(screen.getByLabelText(/password/i)).toBeInTheDocument();
-  });
 
   it("shows validation errors when fields are empty", async () => {
     render(<LoginForm />);

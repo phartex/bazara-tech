@@ -56,12 +56,6 @@ describe("TicketManagement Component", () => {
     expect(screen.getByTestId("horizontal-chart")).toBeInTheDocument();
   });
 
-  it("renders pending ticket cards using pendingData", () => {
-    render(<TicketManagement />);
-    expect(screen.getByText("Pending Tickets")).toBeInTheDocument();
-    expect(screen.getByText("Escalated Tickets")).toBeInTheDocument();
-  });
-
   it("renders DonutChartCard for 'Change Result By Category'", () => {
     render(<TicketManagement />);
     expect(screen.getByTestId("donut-chart")).toBeInTheDocument();

@@ -6,8 +6,9 @@ import { render, screen } from "@testing-library/react";
 import Statistics from "@/components/statistics";
 
 // 🧩 Mock uuid to return predictable keys
+let counter = 0;
 jest.mock("uuid", () => ({
-  v4: jest.fn(() => "mocked-uuid"),
+  v4: jest.fn(() => `mocked-uuid-${counter++}`),
 }));
 
 // 🧩 Mock TicketCard component
